@@ -1,0 +1,38 @@
+version: 0.2
+# Set an environment variable that can be used below in build phases.
+# env is optional
+
+env :
+  variables:
+     TEST_VAR: "t2.micro"
+phases:
+  install:
+    commands:
+      - echo Entered the install phase
+       # - apt-get update -y
+       # Commands specified in a finally blovk are run after command block. 
+       # The Command in a finally block are run even if a command in the command block fails.
+    finally:
+      - echo This always runs even if update or install command fails
+  pre_build:
+    commands:
+      - echo Entered the Pre_build Phase ....
+    finally:
+      - echo This always run even if the login command fails
+  build:
+    commands:
+      - ls -altr
+      - printenv
+      - echo $TEST_VAR
+      - echo $AWS_REGION
+      - echo $CODEBUILD_BUILD_NUMBER
+      - echo Entered the build phase ....
+      - echo Build started on 'date'
+      - aws ec2 describe-instances
+    finally:
+      - echo This always runs even if the install command fails
+  post_build:
+    commands:
+      - echo Entered the post_build_phase ......
+      - echo Bbuild completed on 'date'
+ 
